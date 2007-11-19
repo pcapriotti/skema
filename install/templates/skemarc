@@ -1,0 +1,6 @@
+:author: <%= @name %>
+:email: <%= @email %>
+:skema_modules_dir:
+ - <%= File.join(ENV['HOME'], '.skema') %>
+ - <%= File.join(@install_prefix, 'share/skema') %>
+
