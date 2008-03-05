@@ -1,0 +1,137 @@
+#!/usr/bin/env ruby
+#
+# skema - A command line template expansion tool
+#
+# Copyright (c) 2007 Paolo Capriotti  <p.capriotti@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+require 'rubygems' rescue nil
+require 'skema'
+
+def error(msg)
+    warn "ERROR: #{msg}"
+    exit 1
+end
+
+def usage
+    error "Usage #$0 MODULE TARGET [ARGS...]"
+end
+
+def load_module(mod)
+    alt = [mod]
+    mdir = Skema::config[:skema_modules_dir]
+    case mdir
+    when String
+        alt << File.join(mdir, mod)
+    when Array
+        mdir.each do |module_dir|
+            alt << File.join(module_dir, mod)
+        end
+    end
+    alt = alt.inject([]) do |res, file|
+        if File.exist? file
+            if File.directory? file
+                modfile = File.join(file, "#{File.basename(file)}.rb")
+                if File.exist? modfile
+                    res << modfile
+                else
+                    # add all ruby scripts
+                    Dir[File.join(file, '*.rb')].each do |modfile|
+                        res << modfile
+                    end
+                end
+            else
+                res << file
+            end
+        end
+        res
+    end
+
+    alt.each do |file|
+        begin
+            load file
+            return file
+        rescue Exception => e
+            warn "Could not load #{file}:"
+            warn e
+        end
+    end
+    error "Could not load module #{mod}. Tried #{alt.join ','}"
+end
+
+def ask(key, value)
+    ans = nil
+    while ans.nil? || ans.empty?
+        q = key.to_s
+        q += " [#{value}]" if value
+        q += ": "
+        $stdout.write(q)
+        ans = $stdin.gets.chomp
+        ans = value if ans.empty?
+    end
+    ans
+end
+
+mod = ARGV.shift or usage
+if mod == "-i"
+    $interactive = true
+    mod = ARGV.shift or usage
+end
+target = ARGV.shift or usage
+mod = load_module mod
+error "Invalid template module" unless $last_template
+
+# read args
+args = {}
+if File.exist?(target) and not File.directory?(target)
+    args[:filename] = File.basename(target)
+    target = File.dirname(target)
+end
+ARGV.each do |arg|
+    if arg =~ /^(\S*):(.*)$/
+        args[$1.to_sym] = $2
+    else
+        usage
+    end
+end
+
+$last_template.args.each do |key, value|
+    unless args.has_key? key
+        default = nil
+        if not value.nil?
+            default = value
+        elsif Skema::config.has_key? key
+            default = Skema::config[key]
+        end
+
+        if $interactive || Skema::config[:interactive]
+            args[key] = ask(key, default)
+        elsif default
+            args[key] = default
+        else
+            error "Missing argument #{key}"
+        end
+    end
+end
+
+dir = $last_template.template || File.dirname(mod)
+template = Skema::Template.new dir, target
+template.run args

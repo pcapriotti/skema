@@ -1,0 +1,7 @@
+== 0.2.0 05/03/2008
+
+* Packaged skema as a gem
+
+== 0.1 19/11/2007
+
+* First release

@@ -1,11 +1,12 @@
-= Introduction =
+h1. skema
 
-skema is a command line utility for expanding templates.
+h2. Introduction
+
+*skema* is a command line utility for expanding templates.
 It can be used in a number of ways. Examples include:
- * fast prototyping applications in frameworks that require a lot of boilerplate
-   code;
- * adding copyright statements to source files;
- * automating repetitive coding tasks.
+* fast prototyping applications in frameworks that require a lot of boilerplate code;
+* adding copyright statements to source files;
+* automating repetitive coding tasks.
 
 Of course, there's nothing in skema that you can't find in your favourite text
 editor's templating facility; skema just makes it easier if you happen to like
@@ -15,55 +16,58 @@ skema uses the ERB templating library included with ruby, but you don't need
 to know ruby or ERB to use it. See the 'Creating templates' section below for
 more details on how to add your own templates.
 
-= Installation =
+h2. Installing
 
-Just run the install.sh script included in the package and answer the
-questions it asks you. You need to run it as root if you want skema to be
-installed in a system directory; otherwise, just be sure that the executable
-ends up in your $PATH.
+<pre>sudo gem install skema</pre>
 
-Notice that the install script uses skema itself to create a setup script and
-an initial configuration file.
-
-= Tutorial =
+h2. Tutorial
 
 skema comes with a couple of predefined templates. For example, the 'gpl'
 template adds a copyright statement at the beginning of a C++ file. To try it
 out, pick a source file test.cpp and run:
 
+<pre>
 $ skema gpl test.cpp
 -> ./test.cpp
+</pre>
 
 Now take a look at test.cpp and you'll notice that a nice GPL header with your
 name and email has been added.
 But what if you want to use a different name and/or email for the license?
 No problem, just set some arguments on the command line:
-$ skema gpl test.cpp "name:John Doe" email:john.doe@example.com
+<pre>$ skema gpl test.cpp "name:John Doe" email:john.doe@example.com</pre>
 
 The 'gpl' template, however, is somewhat peculiar in that it acts on a single,
 already existing file. Most of the times, you want to expand a template on a 
-new directory, populating it with files. Let's take the kapp template, that
+new directory, populating it with files. Let's take the _kapp_ template, that
 expands to an empty KDE4 application:
 
+<pre>
 $ skema kapp myapp
 ERROR: Missing argument title
+</pre>
 
 What happened? Well, skema complains because it requires an argument and it
 has no way to infer it without asking.
 
+<pre>
 $ skema kapp myapp title:MyApp
 ERROR: Missing argument name
+</pre>
 
 Now the name is missing:
 
+<pre>
 $ skema kapp myapp title:MyApp name:myapp
 -> CMakeLists.txt
 -> main.cpp
 -> ./myappui.rc
+</pre>
 
 Ok. It worked! Note that skema has an interactive mode, useful when you don't
 know (or don't remember) the required args:
 
+<pre>
 $ skema -i kapp myapp
 email [p.capriotti@gmail.com]:
 version [0.1]:
@@ -73,21 +77,20 @@ author [Paolo Capriotti]:
 -> CMakeLists.txt
 -> main.cpp
 -> ./myappui.rc
+</pre>
 
 Just press enter at the prompt when you want to use the default.
 
-= Creating templates =
 
-Let's create a 'class' template, that expands to a C++ class file.
- 1) Create a 'class' directory in $HOME/.skema
- 2) Inside the 'class' directory, create a file called 'class.rb'
-    with something like:
 
-template :class => nil
+h2. Creating templates
 
- 3) Create a 'templates' directory inside 'class'
- 4) Create a file called 'h' with the following content:
+Let's create a *class* template, that expands to a C++ class file.
 
+# Create a <code>class</code> directory in <code>$HOME/.skema</code>
+# Inside the <code>class</code> directory, create a file called <code>class.rb</code> with something like:<pre>template :class => nil</pre>
+# Create a 'templates' directory inside 'class'
+# Create a file called 'h' with the following content:<pre>
 <%= filename @class.downcase + ".cpp" %>
 #ifndef <%= @class.upcase %>_H
 #define <%= @class.upcase %>_H
@@ -99,11 +102,23 @@ public:
 };
 
 #endif
-
- 5) Create a file called 'cpp'. Content left as an exercise :)
- 6) Try out your new template with
-
+</pre>
+# Create a file called <code>cpp</code>. Content left as an exercise :)
+# Try out your new template with<pre>
 $ skema class . class:Test
+</pre> you should then get two files: <code>test.h</code> and <code>test.cpp</code>.
 
-    you should then get two files: 'test.h' and 'test.cpp'.
+
+h2. How to submit patches
+
+Fork "my repository":http://github.com/pcapriotti/skema/ at "github":http://github.com.
+
+h2. License
+
+This code is free to use under the terms of the MIT license. 
+
+h2. Contact
+
+Please send comments, complaints, new templates, bug reports and feature requests to "Paolo Capriotti":p.capriotti@gmail.com.
+skema does not have a bug tracker, yet, sorry.
 
