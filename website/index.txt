@@ -18,7 +18,12 @@ more details on how to add your own templates.
 
 h2. Installing
 
-<pre>sudo gem install skema</pre>
+<pre>
+sudo gem install skema
+skema -i skemaconfig . filename:.skemarc
+</pre>
+
+and answer the questions.
 
 h2. Tutorial
 
