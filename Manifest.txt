@@ -12,6 +12,8 @@ lib/modules/kapp/kapp.rb
 lib/modules/kapp/templates/CMakeLists.txt
 lib/modules/kapp/templates/appui.rc
 lib/modules/kapp/templates/main.cpp
+lib/modules/lgpl/lgpl.rb
+lib/modules/lgpl/templates/file
 lib/skema.rb
 lib/skema/version.rb
 script/destroy
