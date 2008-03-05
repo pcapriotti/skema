@@ -14,6 +14,8 @@ lib/modules/kapp/templates/appui.rc
 lib/modules/kapp/templates/main.cpp
 lib/modules/lgpl/lgpl.rb
 lib/modules/lgpl/templates/file
+lib/modules/skemaconfig/skemaconfig.rb
+lib/modules/skemaconfig/templates/skemarc
 lib/skema.rb
 lib/skema/version.rb
 script/destroy
