@@ -2,7 +2,7 @@
 
 skema is a command line utility for expanding templates.
 It can be used in a number of ways. Examples include:
- * fast prototyping applications in frameworks that require lot of boilerplate
+ * fast prototyping applications in frameworks that require a lot of boilerplate
    code;
  * adding copyright statements to source files;
  * automating repetitive coding tasks.
@@ -105,5 +105,5 @@ public:
 
 $ skema class . class:Test
 
-    you should then get two files: 'file.h' and 'file.cpp'.
+    you should then get two files: 'test.h' and 'test.cpp'.
 
