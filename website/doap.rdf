@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:doap="http://usefulinc.com/ns/doap#">
+
+<rdfs:Class rdf:nodeID="gitrepo">
+        <rdfs:label>Git Repository</rdfs:label>
+        <rdfs:comment>Git source code repository.</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="http://usefulinc.com/ns/doap#Repository" />
+</rdfs:Class>
+
+<doap:Project rdf:about="http://skema.sourceforge.net/doaf.rdf#skema">
+ <doap:name>skema</doap:name>
+ <doap:shortname>skema</doap:shortname>
+ <doap:created>2007-11-19</doap:created>
+ <doap:shortdesc>A command line utility for expanding templates</doap:shortdesc>
+ <doap:description>skema is a command line utility for expanding templates. It can be used in a number of ways. Examples include: fast prototyping applications in frameworks that require a lot of boilerplate code, adding copyright statements to source files, automating repetitive coding tasks.
+</doap:description>
+ <doap:homepage rdf:resource="http://skema.rubyforge.org" />
+ <doap:wiki rdf:resource="http://github.com/pcapriotti/skema/wikis" />
+ <doap:download-page rdf:resource="https://rubyforge.org/projects/skema/" />
+ <doap:programming-language>ruby</doap:programming-language>
+ <doap:license rdf:resource="http://usefulinc.com/doap/licenses/mit" />
+ <doap:developer>
+  <foaf:Person rdf:about="http://paolo.capriotti.name/foaf.rdf#me">
+     <foaf:name>Paolo Capriotti</foaf:name>
+     <foaf:homepage rdf:resource="http://paolo.capriotti.name/"/>
+     <foaf:mbox_sha1sum>108b753a0274c0386078940527ad8c13d86d11c8</foaf:mbox_sha1sum>
+     <rdfs:seeAlso rdf:resource="http://paolo.capriotti.name/foaf.rdf" />
+  </foaf:Person>
+ </doap:developer>
+ <doap:helper>
+  <foaf:Person>
+     <foaf:name>Riccardo Iaconelli</foaf:name>
+     <foaf:homepage rdf:resource="http://ruphy.org/"/>
+     <foaf:mbox_sha1sum>cd5920cbe63a8bd51cd56e10d60d927e01e55ffc</foaf:mbox_sha1sum>
+  </foaf:Person>
+ </doap:helper>
+ <doap:repository rdf:parseType="Resource">
+    <rdf:type rdf:nodeID="gitrepo" />
+    <doap:location>git@github.com:pcapriotti/skema.git</doap:location>
+    <doap:browse rdf:resource='http://github.com/pcapriotti/skema' />
+ </doap:repository> 
+ <doap:release>
+    <doap:Version>
+        <doap:created>2007-11-19</doap:created>
+        <doap:revision>0.1</doap:revision>
+    </doap:Version>
+ </doap:release>
+ <doap:release>
+    <doap:Version>
+        <doap:created>2008-03-05</doap:created>
+        <doap:revision>0.2.0</doap:revision>
+    </doap:Version>
+ </doap:release>
+</doap:Project>
+
+</rdf:RDF>
